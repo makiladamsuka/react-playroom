@@ -1,24 +1,10 @@
 import './App.css'
-import { useState, useEffect } from 'react'
-import { onPlayerJoin, myPlayer, isHost } from 'playroomkit'
+import { usePlayersList, myPlayer, isHost } from 'playroomkit'
 
 function App() {
-
-  const [players, setPlayers] = useState([]);
-
-  useEffect(() => {
-    onPlayerJoin((newPlayer) => {
-      setPlayers((prevPlayers) => [...prevPlayers, newPlayer]);
-
-      newPlayer.onQuit(() => {
-        setPlayers((prev) => prev.filter((p) => p.id !== player.id));
-      })
-
-    })
-  }, []);
-
-  const me = myPlayer();
-
+  // 1 line replaces useState, useEffect, onPlayerJoin, and onQuit!
+  const players = usePlayersList()
+  const me = myPlayer()
 
   return (
     <div style={{ fontFamily: 'sans-serif', padding: '2rem', textAlign: 'center' }}>
@@ -26,11 +12,13 @@ function App() {
       <p>
         <strong>Your Role:</strong> {isHost() ? '👑 Host' : '🎮 Player'}
       </p>
+
       <h2>Connected Players ({players.length})</h2>
       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
         {players.map((player) => {
           const profile = player.getProfile()
           const isMe = player.id === me?.id
+
           return (
             <div
               key={player.id}
@@ -43,7 +31,11 @@ function App() {
               }}
             >
               <div style={{ fontSize: '2rem' }}>
-                {profile?.avatar ? <img src={profile.avatar} width="48" height="48" alt="avatar" /> : '👤'}
+                {profile?.avatar ? (
+                  <img src={profile.avatar} width="48" height="48" alt="avatar" />
+                ) : (
+                  '👤'
+                )}
               </div>
               <h3 style={{ margin: '0.5rem 0', color: profile?.color?.hex || '#333' }}>
                 {profile?.name} {isMe && '(You)'}
