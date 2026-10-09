@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import './App.css'
 import { usePlayersList, myPlayer, isHost } from 'playroomkit'
+import Board from './components/Board';
 
 const ARENA_WIDTH = 600;
 const ARENA_HEIGHT = 400;
 const MOVE_SPEED = 40;
 
 function App() {
-  // 1 line replaces useState, useEffect, onPlayerJoin, and onQuit!
   const players = usePlayersList(true)
   const me = myPlayer()
 
@@ -99,6 +99,8 @@ function App() {
           </div>
         )
       })}
+
+      <Board />
     </div>
   )
 }
