@@ -4,8 +4,11 @@ import goldenAppleSvg from '../assets/golden_apple.svg'
 import crownSvg from '../assets/crown.svg'
 import snakeEyesSvg from '../assets/snake_eyes.svg'
 import trophySvg from '../assets/trophy.svg'
+import grassPatternSvg from '../assets/grass_pattern.svg'
 
-export function Apple({ size = 32, style = {} }) {
+export { grassPatternSvg }
+
+export function Apple({ size = 100, style = {} }) {
   return (
     <img
       src={appleSvg}
@@ -17,7 +20,7 @@ export function Apple({ size = 32, style = {} }) {
   )
 }
 
-export function GoldenApple({ size = 32, style = {} }) {
+export function GoldenApple({ size = 100, style = {} }) {
   return (
     <img
       src={goldenAppleSvg}
@@ -29,7 +32,7 @@ export function GoldenApple({ size = 32, style = {} }) {
   )
 }
 
-export function Crown({ size = 28, style = {} }) {
+export function Crown({ size = 100, style = {} }) {
   return (
     <img
       src={crownSvg}
@@ -41,7 +44,7 @@ export function Crown({ size = 28, style = {} }) {
   )
 }
 
-export function Trophy({ size = 48, style = {} }) {
+export function Trophy({ size = 100, style = {} }) {
   return (
     <img
       src={trophySvg}
@@ -53,7 +56,7 @@ export function Trophy({ size = 48, style = {} }) {
   )
 }
 
-export function SnakeEyes({ size = 24, direction = 'RIGHT', style = {} }) {
+export function SnakeEyes({ size = 100, direction = 'RIGHT', style = {} }) {
   // Rotate eyes to look in the direction the snake is traveling
   let rotation = 0
   if (direction === 'DOWN') rotation = 90

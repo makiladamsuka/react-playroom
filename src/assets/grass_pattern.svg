@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- 2x2 Checkerboard Grass Tile (32px per tile) -->
+  <!-- Top-Left: Light Green -->
+  <rect x="0" y="0" width="32" height="32" fill="#aad751" />
+  
+  <!-- Top-Right: Darker Green -->
+  <rect x="32" y="0" width="32" height="32" fill="#a2d149" />
+  
+  <!-- Bottom-Left: Darker Green -->
+  <rect x="0" y="32" width="32" height="32" fill="#a2d149" />
+  
+  <!-- Bottom-Right: Light Green -->
+  <rect x="32" y="32" width="32" height="32" fill="#aad751" />
+</svg>
