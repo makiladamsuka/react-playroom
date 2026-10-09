@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%">
+  <defs>
+    <linearGradient id="trophyCup" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff176" />
+      <stop offset="50%" stop-color="#fbc02d" />
+      <stop offset="100%" stop-color="#f57f17" />
+    </linearGradient>
+    <filter id="trophyShadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <g filter="url(#trophyShadow)">
+    <!-- Base Pedestal -->
+    <rect x="18" y="52" width="28" height="6" rx="2" fill="#37474f" />
+    <polygon points="24,52 40,52 38,44 26,44" fill="#546e7a" />
+    <rect x="29" y="38" width="6" height="8" rx="1" fill="#fbc02d" />
+
+    <!-- Handles -->
+    <path d="M19 16 C10 16, 10 32, 21 32" fill="none" stroke="#fbc02d" stroke-width="4" stroke-linecap="round" />
+    <path d="M45 16 C54 16, 54 32, 43 32" fill="none" stroke="#fbc02d" stroke-width="4" stroke-linecap="round" />
+
+    <!-- Cup Body -->
+    <path d="M18 10 L46 10 C46 26, 40 38, 32 38 C24 38, 18 26, 18 10 Z" fill="url(#trophyCup)" />
+
+    <!-- Star Emblem on Cup -->
+    <polygon points="32,18 34,23 39,23 35,26 37,31 32,28 27,31 29,26 25,23 30,23" fill="#ffffff" opacity="0.9" />
+
+    <!-- Shiny Rim -->
+    <ellipse cx="32" cy="10" rx="14" ry="3" fill="#fff59d" stroke="#fbc02d" stroke-width="1" />
+  </g>
+</svg>
