@@ -193,7 +193,7 @@
   height: 640px;
   background-image: url("assets/grass_pattern.svg");
   background-repeat: repeat;
-  background-size: 64px, 64px;
+  background-size: 64px 64px;
   border: 10px solid #4a752c;
   margin: 0 auto;
 
