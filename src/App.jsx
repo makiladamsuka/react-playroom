@@ -7,6 +7,22 @@ const ARENA_WIDTH = 600;
 const ARENA_HEIGHT = 400;
 const MOVE_SPEED = 40;
 
+const DIRECTIONS = {
+  ArrowUp: { x: 0, y: -1, name: "UP" },
+  ArrowDown: { x: 0, y: 1, name: "DOWN" },
+  ArrowLeft: { x: -1, y: 0, name: "LEFT" },
+  ArrowRight: { x: 1, y: 0, name: "RIGHT" },
+};
+
+
+const OPPOSITES = {
+  UP: "DOWN",
+  DOWN: "UP",
+  LEFT: "RIGHT",
+  RIGHT: "LEFT",
+};
+
+
 function App() {
   const players = usePlayersList(true)
   const me = myPlayer()
@@ -48,6 +64,11 @@ function App() {
     window.addEventListener('keydown', handleKeys)
     return () => window.removeEventListener('keydown', handleKeys)
   }, [])
+
+
+  useEffect(() => {
+  }, []);
+
 
   return (
     <div style={{ fontFamily: 'sans-serif', padding: '2rem', textAlign: 'center' }}>
