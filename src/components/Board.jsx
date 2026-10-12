@@ -1,22 +1,20 @@
 import { Apple, SnakeEyes } from "./GameIcons";
 
 
-export default function Board() {
+export default function Board({ body = [], food, direction = "RIGHT" }) {
 
     const tileSize = 32;
     const boardWidth = 640;
     const boardHeight = 640;
-    const body = [
-        { x: Math.floor(Math.random(0, boardWidth)), y: Math.floor(Math.random(0, boardHeight)) }
-    ]
+
     return (
         <div className="board">
 
             <div
                 style={{
                     position: 'absolute',
-                    left: `${5 * tileSize}px`,
-                    top: `${8 * tileSize}px`,
+                    left: `${food.x * tileSize}px`,
+                    top: `${food.y * tileSize}px`,
                 }}
             >
                 <Apple size={tileSize} />
@@ -35,15 +33,15 @@ export default function Board() {
                             top: `${segment.y * tileSize}px`,
                             width: `${tileSize}px`,
                             height: `${tileSize}px`,
-                            backgroundColor: '#296cffff',  // Player color
-                            borderRadius: isHead ? '8px' : '4px', // Rounded head
+                            backgroundColor: '#296cffff',
+                            borderRadius: isHead ? '8px' : '4px',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                         }}
                     >
                         {/* Only put eyes on the HEAD! */}
-                        {isHead && <SnakeEyes size={tileSize} direction="RIGHT" />}
+                        {isHead && <SnakeEyes size={tileSize} direction={direction} />}
                     </div>
                 )
             })}

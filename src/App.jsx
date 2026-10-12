@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { usePlayersList, myPlayer, isHost } from 'playroomkit'
 import Board from './components/Board';
@@ -23,9 +23,19 @@ const OPPOSITES = {
 };
 
 
+
+
 function App() {
   const players = usePlayersList(true)
   const me = myPlayer()
+
+  const [body, setBody] = useState([
+    { x: 10, y: 10 },
+    { x: 9, y: 10 },
+  ])
+
+  const [food, setFood] = useState({ x: 5, y: 5 });
+  const [direction, setDirection] = useState("RIGHT");
 
   useEffect(() => {
     if (me && !me.getState('pos')) {
@@ -65,9 +75,6 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeys)
   }, [])
 
-
-  useEffect(() => {
-  }, []);
 
 
   return (
@@ -121,7 +128,7 @@ function App() {
         )
       })}
 
-      <Board />
+      <Board body={body} food={food} direction={direction} />
     </div>
   )
 }
