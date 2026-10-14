@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef   } from 'react'
 import './App.css'
 import { usePlayersList, myPlayer, isHost } from 'playroomkit'
 import Board from './components/Board';
@@ -6,6 +6,8 @@ import Board from './components/Board';
 const ARENA_WIDTH = 600;
 const ARENA_HEIGHT = 400;
 const MOVE_SPEED = 40;
+const SPEED_MS = 150;
+const GRID_SIZE = 20; 
 
 const DIRECTIONS = {
   ArrowUp: { x: 0, y: -1, name: "UP" },
@@ -36,6 +38,9 @@ function App() {
 
   const [food, setFood] = useState({ x: 5, y: 5 });
   const [direction, setDirection] = useState("RIGHT");
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [score, setScore] = useState(0);
+  const directionRef = useRef("RIGHT");
 
   useEffect(() => {
     if (me && !me.getState('pos')) {
@@ -48,33 +53,74 @@ function App() {
 
   useEffect(() => {
     const handleKeys = (e) => {
-      if (!me) return;
-      const pos = me.getState('pos') || { x: 0, y: 0 };
-      let { x, y } = pos;
+      const move = DIRECTIONS[e.key];
+      if (!move) return;
 
-      switch (e.key) {
-        case 'ArrowLeft':
-          x -= MOVE_SPEED;
-          break;
-        case 'ArrowRight':
-          x += MOVE_SPEED;
-          break;
-        case 'ArrowUp':
-          y -= MOVE_SPEED;
-          break;
-        case 'ArrowDown':
-          y += MOVE_SPEED;
-          break;
-        default:
-          break;
+      e.preventDefault();
+
+      // Prevent 180° self-reversal into the snake's neck
+      if (move.name !== OPPOSITES[directionRef.current]) {
+        directionRef.current = move.name;
+        setDirection(move.name);
       }
+    };
+    window.addEventListener('keydown', handleKeys);
+    return () => window.removeEventListener('keydown', handleKeys);
+  }, []);
 
-      me.setState('pos', { x, y })
-    }
-    window.addEventListener('keydown', handleKeys)
-    return () => window.removeEventListener('keydown', handleKeys)
-  }, [])
+  const resetGame = () => {
+    setBody([
+      { x: 10, y: 10 },
+      { x: 9, y: 10 },
+    ]);
+    directionRef.current = "RIGHT";
+    setDirection("RIGHT");
+    setFood({ x: 5, y: 5 });
+    setScore(0);
+    setIsGameOver(false);
+  };
 
+
+  useEffect(() => {
+    if (isGameOver) return;
+    const interval = setInterval(() => {
+      setBody((prevBody) => {
+        const head = prevBody[0];
+        const dir = directionRef.current;
+        let nextX = head.x;
+        let nextY = head.y;
+        if (dir === "UP") nextY -= 1;
+        if (dir === "DOWN") nextY += 1;
+        if (dir === "LEFT") nextX -= 1;
+        if (dir === "RIGHT") nextX += 1;
+        // Wall collision check
+        if (nextX < 0 || nextX >= GRID_SIZE || nextY < 0 || nextY >= GRID_SIZE) {
+          setIsGameOver(true);
+          return prevBody;
+        }
+        // Self collision check (hitting own tail)
+        const hitSelf = prevBody.some((seg) => seg.x === nextX && seg.y === nextY);
+        if (hitSelf) {
+          setIsGameOver(true);
+          return prevBody;
+        }
+        const newHead = { x: nextX, y: nextY };
+        // Eat Apple
+        if (newHead.x === food.x && newHead.y === food.y) {
+          setScore((s) => s + 1);
+          setFood({
+            x: Math.floor(Math.random() * GRID_SIZE),
+            y: Math.floor(Math.random() * GRID_SIZE),
+          });
+          // Grow: Add new head and keep whole body
+          return [newHead, ...prevBody];
+        }
+        // Regular step: Add new head and remove tail
+        return [newHead, ...prevBody.slice(0, -1)];
+      });
+    }, SPEED_MS);
+    return () => clearInterval(interval);
+  }, [food, isGameOver]);
 
 
   return (
@@ -127,6 +173,30 @@ function App() {
           </div>
         )
       })}
+
+      <div style={{ margin: '1rem 0' }}>
+        <p style={{ fontSize: '1.25rem', fontWeight: 'bold', margin: '0.5rem 0' }}>Score: {score}</p>
+        {isGameOver && (
+          <div style={{ marginBottom: '1rem' }}>
+            <h2 style={{ color: '#ef4444', margin: '0.5rem 0' }}>Game Over!</h2>
+            <button
+              onClick={resetGame}
+              style={{
+                padding: '8px 20px',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                backgroundColor: '#22c55e',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+              }}
+            >
+              Play Again
+            </button>
+          </div>
+        )}
+      </div>
 
       <Board body={body} food={food} direction={direction} />
     </div>
